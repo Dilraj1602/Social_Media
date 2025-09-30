@@ -15,8 +15,7 @@ A comprehensive backend API for analyzing Instagram influencer profiles, posts, 
 
 - Node.js & Express.js
 - MongoDB with Mongoose
-- Puppeteer for web scraping
-- Sharp for image processing
+
 - TensorFlow.js for AI analysis
 - Rate limiting and security middleware
 

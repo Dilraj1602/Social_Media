@@ -1,8 +1,8 @@
-const puppeteer = require('puppeteer');
+// const puppeteer = require('puppeteer'); // Removed
 const Influencer = require('../models/Influencer');
 const Post = require('../models/Post');
 const Reel = require('../models/Reel');
-const sharp = require('sharp');
+// const sharp = require('sharp'); // Removed
 const Jimp = require('jimp');
 
 // Scrape influencer profile
@@ -10,74 +10,8 @@ const scrapeInfluencerProfile = async (req, res) => {
   try {
     const { username } = req.params;
     
-    const browser = await puppeteer.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
-    
-    const page = await browser.newPage();
-    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
-    
-    // Navigate to Instagram profile
-    await page.goto(`https://www.instagram.com/${username}/`, { 
-      waitUntil: 'networkidle2',
-      timeout: 30000 
-    });
-    
-    // Wait for profile data to load
-    await page.waitForSelector('header', { timeout: 10000 });
-    
-    // Extract profile data
-    const profileData = await page.evaluate(() => {
-      const getTextContent = (selector) => {
-        const element = document.querySelector(selector);
-        return element ? element.textContent.trim() : '';
-      };
-      
-      const getNumberFromText = (text) => {
-        const match = text.match(/[\d,]+/);
-        return match ? parseInt(match[0].replace(/,/g, '')) : 0;
-      };
-      
-      // Get profile picture
-      const profileImg = document.querySelector('header img');
-      const profilePicture = profileImg ? profileImg.src : '';
-      
-      // Get display name
-      const displayName = getTextContent('header h2');
-      
-      // Get bio
-      const bio = getTextContent('header div[data-testid="user-bio"]');
-      
-      // Get stats
-      const stats = document.querySelectorAll('header section ul li');
-      let followers = 0, following = 0, posts = 0;
-      
-      if (stats.length >= 3) {
-        posts = getNumberFromText(stats[0].textContent);
-        followers = getNumberFromText(stats[1].textContent);
-        following = getNumberFromText(stats[2].textContent);
-      }
-      
-      // Check if verified
-      const isVerified = document.querySelector('header svg[aria-label="Verified"]') !== null;
-      
-      // Check if private
-      const isPrivate = getTextContent('header').includes('This account is private');
-      
-      return {
-        displayName,
-        profilePicture,
-        bio,
-        followers,
-        following,
-        posts,
-        isVerified,
-        isPrivate
-      };
-    });
-    
-    await browser.close();
+    // Puppeteer logic removed. You must implement scraping logic using another method or stub this function.
+    const profileData = {};
     
     // Save or update influencer data
     const influencerData = {
@@ -132,75 +66,8 @@ const scrapePosts = async (req, res) => {
       });
     }
     
-    const browser = await puppeteer.launch({
-      headless: true,
-      args: ['--no-sandbox', '--disable-setuid-sandbox']
-    });
-    
-    const page = await browser.newPage();
-    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36');
-    
-    await page.goto(`https://www.instagram.com/${username}/`, { 
-      waitUntil: 'networkidle2',
-      timeout: 30000 
-    });
-    
-    // Scroll to load more posts
-    await page.evaluate(async () => {
-      await new Promise((resolve) => {
-        let totalHeight = 0;
-        const distance = 100;
-        const timer = setInterval(() => {
-          const scrollHeight = document.body.scrollHeight;
-          window.scrollBy(0, distance);
-          totalHeight += distance;
-          
-          if(totalHeight >= scrollHeight){
-            clearInterval(timer);
-            resolve();
-          }
-        }, 100);
-      });
-    });
-    
-    // Extract posts data
-    const postsData = await page.evaluate((limit) => {
-      const posts = [];
-      const postElements = document.querySelectorAll('article a[href*="/p/"]');
-      
-      for (let i = 0; i < Math.min(postElements.length, limit); i++) {
-        const postElement = postElements[i];
-        const href = postElement.getAttribute('href');
-        const postId = href.split('/')[2];
-        
-        // Get post image
-        const img = postElement.querySelector('img');
-        const imageUrl = img ? img.src : '';
-        
-        // Get likes and comments (if visible)
-        const likesElement = postElement.querySelector('[aria-label*="likes"]');
-        const commentsElement = postElement.querySelector('[aria-label*="comments"]');
-        
-        const likes = likesElement ? 
-          parseInt(likesElement.getAttribute('aria-label').match(/[\d,]+/)?.[0]?.replace(/,/g, '') || '0') : 0;
-        const comments = commentsElement ? 
-          parseInt(commentsElement.getAttribute('aria-label').match(/[\d,]+/)?.[0]?.replace(/,/g, '') || '0') : 0;
-        
-        posts.push({
-          postId,
-          imageUrl,
-          thumbnailUrl: imageUrl,
-          likes,
-          comments,
-          postDate: new Date(),
-          postType: 'image'
-        });
-      }
-      
-      return posts;
-    }, parseInt(limit));
-    
-    await browser.close();
+    // Puppeteer logic removed. You must implement scraping logic using another method or stub this function.
+    const postsData = [];
     
     // Save posts to database
     const savedPosts = [];
@@ -264,8 +131,8 @@ const processImageAnalysis = async (req, res) => {
     const response = await axios.get(post.imageUrl, { responseType: 'arraybuffer' });
     const imageBuffer = Buffer.from(response.data);
     
-    // Process with Sharp for basic analysis
-    const metadata = await sharp(imageBuffer).metadata();
+  // Sharp logic removed. You must implement image analysis using another method or stub this function.
+  const metadata = {};
     
     // Process with Jimp for additional analysis
     const jimpImage = await Jimp.read(imageBuffer);

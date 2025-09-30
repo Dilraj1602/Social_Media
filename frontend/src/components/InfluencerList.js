@@ -45,13 +45,14 @@ const InfluencerList = () => {
   }, [sortBy]);
 
   const filteredInfluencers = influencers.filter(influencer => {
-    if (!influencer || !influencer.displayName || !influencer.username) {
-      return false;
-    }
-    const matches = influencer.displayName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      influencer.username.toLowerCase().includes(searchTerm.toLowerCase());
+    if (!influencer || typeof influencer !== 'object') return false;
+    const displayName = influencer.displayName || '';
+    const username = influencer.username || '';
+    if (!displayName && !username) return false;
+    const matches = displayName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      username.toLowerCase().includes(searchTerm.toLowerCase());
     if (searchTerm && matches) {
-      console.log('🔍 Search match found:', influencer.displayName);
+      console.log('🔍 Search match found:', displayName);
     }
     return matches;
   });
@@ -147,20 +148,28 @@ const InfluencerList = () => {
       {/* Influencers Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {sortedInfluencers.map((influencer) => {
-          if (!influencer || !influencer._id || !influencer.username) {
+          if (!influencer || typeof influencer !== 'object' || !influencer._id || !influencer.username) {
             return null;
           }
-          
+          const displayName = influencer.displayName || 'Unknown';
+          const username = influencer.username || 'unknown';
+          const profilePicture = influencer.profilePicture || '/default-avatar.png';
+          const followers = typeof influencer.followers === 'number' ? influencer.followers : 0;
+          const posts = typeof influencer.posts === 'number' ? influencer.posts : 0;
+          const engagementRate = typeof influencer.engagementRate === 'number' ? influencer.engagementRate : 0;
+          const isVerified = !!influencer.isVerified;
+          const bio = influencer.bio || '';
+          const category = influencer.category || 'Lifestyle';
           return (
             <Link
               key={influencer._id}
-              to={`/influencer/${influencer.username}`}
+              to={`/influencer/${username}`}
               className="card card-hover group"
             >
             <div className="flex items-center space-x-4 mb-4">
               <img
-                src={influencer.profilePicture || '/default-avatar.png'}
-                alt={influencer.displayName || 'Influencer'}
+                src={profilePicture}
+                alt={displayName}
                 className="w-16 h-16 rounded-full object-cover"
                 onError={(e) => {
                   e.target.src = 'https://via.placeholder.com/64x64/374151/ffffff?text=IMG';
@@ -168,10 +177,10 @@ const InfluencerList = () => {
               />
               <div className="flex-1">
                 <h3 className="text-xl font-bold text-white group-hover:text-primary-400 transition-colors">
-                  {influencer.displayName || 'Unknown'}
+                  {displayName}
                 </h3>
-                <p className="text-gray-400">@{influencer.username || 'unknown'}</p>
-                {influencer.isVerified && (
+                <p className="text-gray-400">@{username}</p>
+                {isVerified && (
                   <span className="inline-flex items-center text-blue-400 text-sm">
                     <TrendingUp className="w-4 h-4 mr-1" />
                     Verified
@@ -187,7 +196,7 @@ const InfluencerList = () => {
                   <span className="text-sm text-gray-400">Followers</span>
                 </div>
                 <div className="text-lg font-bold text-white">
-                  {(influencer.followers || 0).toLocaleString()}
+                  {followers.toLocaleString()}
                 </div>
               </div>
               <div className="text-center">
@@ -196,7 +205,7 @@ const InfluencerList = () => {
                   <span className="text-sm text-gray-400">Posts</span>
                 </div>
                 <div className="text-lg font-bold text-white">
-                  {(influencer.posts || 0).toLocaleString()}
+                  {posts.toLocaleString()}
                 </div>
               </div>
               <div className="text-center">
@@ -205,14 +214,14 @@ const InfluencerList = () => {
                   <span className="text-sm text-gray-400">Engagement</span>
                 </div>
                 <div className="text-lg font-bold text-white">
-                  {(influencer.engagementRate || 0).toFixed(1)}%
+                  {engagementRate.toFixed(1)}%
                 </div>
               </div>
             </div>
 
-            {influencer.bio && (
+            {bio && (
               <p className="text-gray-400 text-sm line-clamp-2">
-                {influencer.bio}
+                {bio}
               </p>
             )}
 
@@ -220,7 +229,7 @@ const InfluencerList = () => {
               <div className="flex items-center justify-between">
                 <span className="text-sm text-gray-400">Category</span>
                 <span className="text-sm text-primary-400 capitalize">
-                  {influencer.category || 'Lifestyle'}
+                  {category}
                 </span>
               </div>
             </div>

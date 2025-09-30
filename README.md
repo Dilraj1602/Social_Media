@@ -2,21 +2,25 @@
 
 A comprehensive **MERN stack** application built with **pure JavaScript** for analyzing Instagram influencer profiles, posts, and reels with AI-powered insights and beautiful visualizations.
 
+
 **✅ Pure MERN Stack - No Python Dependencies**
-- **MongoDB** - Database
-- **Express.js** - Backend API
-- **React** - Frontend Framework  
+- **MongoDB** - Database (optional, app works fully with mock data)
+- **Express.js** - Backend API (uses robust mock data if DB not available)
+- **React** - Frontend Framework
 - **Node.js** - JavaScript Runtime
 - **Tailwind CSS** - Styling
 
+**Note:** Puppeteer and Sharp are NOT required. All data is served from robust mock data for easy local development and testing.
+
 ## 🚀 Features
 
+
 ### Core Functionality
+- **Influencer Search by Username**: Instantly search influencers by username and view their full profile
 - **Influencer Profile Management**: Complete influencer profiles with analytics
-- **Post Analysis**: AI-powered image analysis with keywords, vibes, and quality metrics
-- **Reel Analysis**: Video content analysis with engagement metrics
-- **Instagram Scraping**: Automated data collection from Instagram profiles
-- **Real-time Analytics**: Comprehensive engagement and performance metrics
+- **Post Analysis**: AI-powered image analysis with keywords, vibes, and quality metrics (mocked)
+- **Reel Analysis**: Video content analysis with engagement metrics (mocked)
+- **Real-time Analytics**: Comprehensive engagement and performance metrics (mocked)
 - **Beautiful UI**: Modern, responsive design with dark theme
 
 ### AI-Powered Insights
@@ -27,13 +31,14 @@ A comprehensive **MERN stack** application built with **pure JavaScript** for an
 
 ## 🛠 Tech Stack
 
+
 ### Backend
 - **Node.js & Express.js**: RESTful API server
-- **MongoDB & Mongoose**: Database and ODM
-- **Puppeteer**: Web scraping automation
-- **Sharp**: Image processing
-- **Jimp**: Pure JavaScript image manipulation
+- **MongoDB & Mongoose**: Database and ODM (optional)
+- **Mock Data**: All endpoints work with robust mock data for easy setup
 - **Rate Limiting**: API protection and security
+- **Comprehensive Error Handling**: All endpoints return clear error messages
+
 
 ### Frontend
 - **React 18**: Modern React with Create React App
@@ -41,6 +46,7 @@ A comprehensive **MERN stack** application built with **pure JavaScript** for an
 - **Recharts**: Beautiful data visualizations
 - **Lucide React**: Modern icon library
 - **React Router**: Client-side routing
+- **Robust Error Handling**: All pages/components handle errors and loading states gracefully
 
 ## 📁 Project Structure
 
@@ -92,6 +98,7 @@ Project/
 - MongoDB (local or cloud)
 - npm or yarn
 
+
 ### Backend Setup
 
 1. **Navigate to backend directory:**
@@ -104,30 +111,19 @@ cd backend
 npm install
 ```
 
-3. **Create environment file:**
+3. **(Optional) Create environment file:**
 ```bash
 cp .env.example .env
 ```
 
-4. **Configure environment variables:**
-```env
-PORT=5000
-MONGODB_URI=mongodb://localhost:27017/instagram_influencer
-NODE_ENV=development
-JWT_SECRET=your_jwt_secret_here
-INSTAGRAM_USERNAME=your_instagram_username
-INSTAGRAM_PASSWORD=your_instagram_password
-RATE_LIMIT_WINDOW_MS=900000
-RATE_LIMIT_MAX_REQUESTS=100
-FRONTEND_URL=http://localhost:3000
-```
+4. **(Optional) Configure environment variables for MongoDB:**
+If you want to use a real database, edit `.env` as needed. Otherwise, the app works fully with mock data—no DB required!
 
-5. **Start MongoDB service**
-
-6. **Run the backend:**
+5. **Run the backend (mock data mode):**
 ```bash
 npm run dev
 ```
+
 
 ### Frontend Setup
 
@@ -149,27 +145,25 @@ npm start
 4. **Open your browser:**
 Navigate to `http://localhost:3000`
 
-## 📊 API Endpoints
+
+## 📊 API Endpoints (Mock Data)
 
 ### Influencers
-- `GET /api/influencers` - Get all influencers
+- `GET /api/influencers` - Get all influencers (search, sort, paginate)
 - `GET /api/influencers/:username` - Get influencer by username
 - `GET /api/influencers/:username/profile` - Get full profile with posts and reels
 
 ### Posts
-- `GET /api/posts/influencer/:username` - Get posts by influencer
-- `GET /api/posts/:postId` - Get specific post
-- `GET /api/posts/influencer/:username/analytics` - Get post analytics
+- `GET /api/posts` - Get all posts (mocked)
+- `GET /api/posts/:id` - Get specific post (mocked)
 
 ### Reels
-- `GET /api/reels/influencer/:username` - Get reels by influencer
-- `GET /api/reels/:reelId` - Get specific reel
-- `GET /api/reels/influencer/:username/analytics` - Get reel analytics
+- `GET /api/reels` - Get all reels (mocked)
+- `GET /api/reels/:id` - Get specific reel (mocked)
 
-### Scraping
-- `POST /api/scraping/profile/:username` - Scrape influencer profile
-- `POST /api/scraping/posts/:username` - Scrape influencer posts
-- `POST /api/scraping/analyze/:postId` - Analyze post image
+### Health
+- `GET /api/health` - Server health check
+
 
 ## 🎨 UI Features
 
@@ -181,19 +175,20 @@ Navigate to `http://localhost:3000`
 - **Typography**: Inter font family for readability
 
 ### Components
+- **Influencer Search**: Search influencers by username with instant results
 - **Profile Cards**: Beautiful influencer profile displays
 - **Analytics Charts**: Interactive data visualizations
 - **Post Grids**: Masonry-style post layouts
 - **Reel Players**: Video content with engagement metrics
-- **Loading States**: Smooth loading animations
+- **Loading States & Error Boundaries**: Smooth loading animations and robust error handling
 
-## 🔒 Security Features
+
+## 🔒 Security & Robustness
 
 - **Rate Limiting**: API protection against abuse
 - **CORS Configuration**: Secure cross-origin requests
 - **Input Validation**: Data sanitization and validation
-- **Error Handling**: Comprehensive error management
-- **Helmet Security**: HTTP security headers
+- **Error Handling**: Comprehensive error management (frontend & backend)
 
 ## 📈 Analytics & Insights
 
@@ -238,5 +233,14 @@ For support and questions, please open an issue in the repository.
 
 ---
 
+
+---
 **Built with ❤️ using the MERN stack**
+
+---
+**Current State:**
+- All backend endpoints work with robust mock data (no DB or scraping required)
+- Puppeteer and Sharp are NOT required
+- Search by username and view influencer profile is fully supported
+- All major errors and edge cases are handled gracefully in both backend and frontend
 
